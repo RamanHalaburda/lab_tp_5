@@ -34,7 +34,7 @@ function View_Lines($str)
         exit();
     }
 
-    $query = 'SELECT '.$str.' FROM tp5.user';
+    $query = 'SELECT '.$str.' FROM tp5.message';
     $result = mysqli_query($conn, $query) or die('Query is not running: '.mysqli_error());
     echo "<table border = 1>\n";
     while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC))
@@ -61,9 +61,9 @@ function FunctionName($login, $password)
     $result = mysqli_query($conn, $query) or die('Query is not running: ' . mysqli_error());
         while ( $line = mysqli_fetch_array($result, MYSQLI_ASSOC))
         {
-            if($line['login'] == $login && $line['password'] == $password)
+            if($line['login'] == $login && $line['pass'] == $password)
             {
-                $_SESSION['name'] = $line['nam'];
+                $_SESSION['name'] = $line['fname'];
                 $_SESSION['login'] = $line['login'];
                 echo '<html><head><title>Redirect</title><meta http-equiv="Refresh" content="1; URL=message.php"></head><body></body></html>';
                 $s = 1;
@@ -72,6 +72,33 @@ function FunctionName($login, $password)
         }
         if($s==0) echo "User with this login doesn't exist!";
 }
+
+function AdminLogIn($login, $password)
+{
+    $conn = @mysqli_connect("127.0.0.1:3306", "root", "1656") or die("Database tp5 connection failed: " . mysqli_error());
+    if (!$conn)
+    {
+        echo("<p>Error access to database</p>");
+        exit();
+    }
+
+    $s = 0;
+    $query = 'SELECT fname, login, pass FROM tp5.user';
+    $result = mysqli_query($conn, $query) or die('Query is not running: ' . mysqli_error());
+    while ( $line = mysqli_fetch_array($result, MYSQLI_ASSOC))
+    {
+        if($line['login'] == $login && $line['pass'] == $password && $login == 'admin' && $password == 'admin')
+        {
+            $_SESSION['name'] = $line['fname'];
+            $_SESSION['login'] = $line['login'];
+            echo '<html><head><title>Redirect</title><meta http-equiv="Refresh" content="1; URL=message.php"></head><body></body></html>';
+            $s = 1;
+            break;
+        }
+    }
+    if($s==0) echo "Admin with this login doesn't exist!";
+}
+
 function deleteName($value='')
 {
     $conn = @mysqli_connect("127.0.0.1:3306", "root", "1656") or die("Database tp5 connection failed: " . mysqli_error());

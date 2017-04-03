@@ -1,18 +1,18 @@
 ﻿<?php
 include 'connectionMySQL.php';
-class MyUser
+class Guest
 {
 	var $fname;
 	var $sname;
 	var $telephone;
 	var $login;
-	var $pass;
+	var $password;
 
 	function construct($fname, $sname, $telephone, $login, $pass)
 	{
-		$this->name = $fname;
-		$this->firstname = $sname;
-		$this->telefon = $telephone;
+		$this->fname = $fname;
+		$this->sname = $sname;
+		$this->telephone = $telephone;
 		$this->login = $login;
 		$this->password = $pass;
 	}
@@ -25,28 +25,24 @@ class MyUser
 
 	function ZapBase($fname, $sname, $telephone, $login, $pass)
 	{
-		Connectsql();
 		add_Lines($this->$fname, $this->$sname, $this->$telephone, $this->$login, $this->$pass);
 	}
 
 	function returnDataBase($str)
 	{
-		Connectsql();
 		View_Lines($str);
 	}
 }
 
-class saveUser extends MyUser
+class User extends Guest
 {
 	function ZapBase($fname, $sname, $telephone, $login, $pass)
 	{
-		Connectsql();
 		add_Lines($fname, $sname, $telephone, $login, $pass);
 	}
 
 	function authorization($LOGIN, $PASSWORD)
 	{
-		Connectsql();
 		FunctionName($LOGIN, $PASSWORD);
 	}
 
@@ -54,6 +50,24 @@ class saveUser extends MyUser
 	{
 		deleteName($value);
 	}
+}
+
+class Admin extends Guest
+{
+    function ZapBase($fname, $sname, $telephone, $login, $pass)
+    {
+        add_Lines($fname, $sname, $telephone, $login, $pass);
+    }
+
+    function authorization($LOGIN, $PASSWORD)
+    {
+        AdminLogIn($LOGIN, $PASSWORD);
+    }
+
+    function DeleteName($value)
+    {
+        deleteName($value);
+    }
 }
 ?>
 
