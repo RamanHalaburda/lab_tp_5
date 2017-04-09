@@ -18,10 +18,10 @@
 <?php
 	include 'class.php';
 	$guest = new Guest();
-	$ser = new User();
+	$user = new User();
 	if(isset($_POST['sub']))
 	{
-		$User->ZapBase($_POST['fname'], $_POST['sname'], $_POST['telephone'], $_POST['login'],$_POST['pass']);
+		$user->ZapBase($_POST['fname'], $_POST['sname'], $_POST['telephone'], $_POST['login'],$_POST['pass']);
 	}
 ?>
 </body>

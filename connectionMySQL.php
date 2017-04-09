@@ -1,5 +1,4 @@
 ﻿<?php
-//$conn = null;
 
 function Connectsql()
 {
@@ -11,7 +10,7 @@ function Connectsql()
     }
 }
 
-function add_Lines($fname, $sname, $telephone, $login, $pass)
+function add_Line($fname, $sname, $telephone, $login, $pass)
 {
     $conn = @mysqli_connect("127.0.0.1:3306", "root", "1656") or die("Database tp5 connection failed: " . mysqli_error());
     if (!$conn)
@@ -25,6 +24,19 @@ function add_Lines($fname, $sname, $telephone, $login, $pass)
     if ($my_zap) echo "Added to database."; else echo "User with this login is exist now!";
 }
 
+function change_Line($fname, $sname, $telephone, $login, $pass)
+{
+    $conn = @mysqli_connect("127.0.0.1:3306", "root", "1656") or die("Database tp5 connection failed: " . mysqli_error());
+    if (!$conn)
+    {
+        echo("<p>Error access to database</p>");
+        exit();
+    }
+
+    $my_zap = "UPDATE tp5.user SET fname = '".$fname."',sname = '".$sname."', telephone = '".$telephone."', pass = '".$pass."' WHERE login = '".$login."';";
+    if (mysqli_query($conn, $my_zap)) echo "Row is altered."; else echo "Row is not altered!";
+}
+
 function View_Lines($str)
 {
     $conn = @mysqli_connect("127.0.0.1:3306", "root", "1656") or die("Database tp5 connection failed: " . mysqli_error());
@@ -36,14 +48,14 @@ function View_Lines($str)
 
     $query = 'SELECT '.$str.' FROM tp5.message';
     $result = mysqli_query($conn, $query) or die('Query is not running: '.mysqli_error());
-    echo "<table border = 1>\n";
+    echo "<center><table border = 1>\n";
     while ($line = mysqli_fetch_array($result, MYSQLI_ASSOC))
     {
         echo "\t<tr>\n";
         foreach ($line as $col_value) echo "\t\t<td>$col_value</td>\n";    
         echo "\t</tr>\n";
     }
-    echo "</table>\n";
+    echo "</table></center>\n";
     mysqli_free_result($result);
     mysqli_close();
 }
@@ -91,7 +103,7 @@ function AdminLogIn($login, $password)
         {
             $_SESSION['name'] = $line['fname'];
             $_SESSION['login'] = $line['login'];
-            echo '<html><head><title>Redirect</title><meta http-equiv="Refresh" content="1; URL=message.php"></head><body></body></html>';
+            echo '<html><head><title>Redirect</title><meta http-equiv="Refresh" content="1; URL=admin.php"></head><body></body></html>';
             $s = 1;
             break;
         }
@@ -109,6 +121,19 @@ function deleteName($value='')
     }
 
     $my_zap = "DELETE FROM tp5.user WHERE login ='".$value."'";
+    mysqli_query($conn, $my_zap);
+}
+
+function deleteMessage($value='')
+{
+    $conn = @mysqli_connect("127.0.0.1:3306", "root", "1656") or die("Database tp5 connection failed: " . mysqli_error());
+    if (!$conn)
+    {
+        echo("<p>Error access to database</p>");
+        exit();
+    }
+
+    $my_zap = "DELETE FROM tp5.message WHERE id ='".$value."'";
     mysqli_query($conn, $my_zap);
 }
 ?>

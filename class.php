@@ -38,7 +38,7 @@ class User extends Guest
 {
 	function ZapBase($fname, $sname, $telephone, $login, $pass)
 	{
-		add_Lines($fname, $sname, $telephone, $login, $pass);
+		add_Line($fname, $sname, $telephone, $login, $pass);
 	}
 
 	function authorization($LOGIN, $PASSWORD)
@@ -46,19 +46,14 @@ class User extends Guest
 		FunctionName($LOGIN, $PASSWORD);
 	}
 
-	function DeleteName($value)
-	{
-		deleteName($value);
-	}
+    function changeRecord($fname, $sname, $telephone, $login, $pass)
+    {
+        change_Line($fname, $sname, $telephone, $login, $pass);
+    }
 }
 
 class Admin extends Guest
 {
-    function ZapBase($fname, $sname, $telephone, $login, $pass)
-    {
-        add_Lines($fname, $sname, $telephone, $login, $pass);
-    }
-
     function authorization($LOGIN, $PASSWORD)
     {
         AdminLogIn($LOGIN, $PASSWORD);
@@ -67,6 +62,11 @@ class Admin extends Guest
     function DeleteName($value)
     {
         deleteName($value);
+    }
+
+    function DeleteMessage($value)
+    {
+        deleteMessage($value);
     }
 }
 ?>
